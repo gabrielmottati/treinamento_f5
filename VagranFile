@@ -1,0 +1,25 @@
+Vagrant.configure("2") do |config|
+
+  (1..2).each do |i|
+    config.vm.define "LABWEB-#{i}" do |centos|
+      centos.vm.box = "mottati/LAB_WEBSERVICE"
+      centos.vm.box_url = "https://vagrantcloud.com/mottati/boxes/LAB_WEBSERVICE/versions/0.0.1/providers/virtualbox/amd64/vagrant.box"
+      centos.vm.network "private_network", ip: "192.168.56.#{i}", auto_config: false
+
+      centos.vm.hostname = "LABCENTOS#{i}"
+      centos.ssh.username= "vagrant"
+      centos.ssh.password= "vagrant"
+
+      centos.vm.provider :virtualbox do |v| 
+        v.name = "LABWEB-#{i}"
+        v.cpus = 2
+        v.memory = 1024
+
+    if Vagrant.has_plugin?("vagrant-vbguest")
+      config.vbguest.auto_update = false
+      config.vbguest.allow_downgrade = false
+    end
+   end
+  end
+ end
+end
